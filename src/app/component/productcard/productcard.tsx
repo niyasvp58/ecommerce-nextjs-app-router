@@ -2,18 +2,14 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
 import { ShopContext } from '../contextcart/contextcart';
-import '../style/Productcard.css'
+import '../style/productcard.css'
 
 interface Product {
-  id: number;
+  id: any;
   name: string;
-  image: { url: string };
+  image: { url: any };
   price: { raw: number };
   seo: { description: string };
-  category: string;
-  categories: {
-    name: string;
-  };
 }
 
 interface Props {

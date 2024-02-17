@@ -2,23 +2,31 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CartItem } from "./cartitem";
 import { ShopContext } from "../contextcart/contextcart";
-import { Productdata } from "../data/data";
+import { Productdata, getproduct } from "../data/data";
 import Checkout from "../checkout/checkout";
+
+interface Product {
+  id: any;
+  name: string;
+  price: {
+    raw: number;
+  };
+}
 
 function Cart() {
   const shopContext = useContext(ShopContext);
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState <Product[]> ([]);
   const [loading,setloading] = useState(true)
+  const fetchData = async () => {
+    try {
+      const products = await getproduct();
+      setProduct(products);
+      setloading(false)
+    } catch (error) {
+      console.log('context error', error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const products = await Productdata.getproduct();
-        setProduct(products);
-        setloading(false)
-      } catch (error) {
-        console.log('context error', error);
-      }
-    };
     fetchData();
   }, []);
 
@@ -63,3 +71,4 @@ function Cart() {
 }
 
 export default Cart;
+

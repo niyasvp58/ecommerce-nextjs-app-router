@@ -1,29 +1,21 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Productdata } from '../data/data'
+import { getcategorydata, getproduct } from '../data/data'
 import Productcard from '../productcard/productcard';
 import '../style/productlist.css'
 
-interface product{
-    id: number;
-    name: string;
-    price: {
-      raw: number;
-    };
-    image: {
-      url: string;
-    };
-    seo: {
-      description: string;
-    };
-    category: string;
-    categories: {
-      name: string;
-    };
+interface product {
+    id: any;
+    name: any;
+    image: any | null ;
+    price: { raw: any };
+    seo: { description: any };
+    categories: { name: any }[];
 }
+
 interface categorydata{
-    id:string;
-    name:string;
+    id:any;
+    name:any;
 }
 export default function Productlist() {
     const [product,setproduct] =useState <product[]>([]);
@@ -32,14 +24,14 @@ export default function Productlist() {
     const [loading,setloading] = useState(true)
     const fetchdata= async ()=>{
         try{
-            const product = await Productdata.getproduct();
-            const categorydata= await Productdata.getcategorydata();
-            setproduct(product)
+            const product = await getproduct();
+            const categorydata= await getcategorydata();
+            setproduct(product);
+            setcategorydata(categorydata || [])
             setloading(false)
             if(lastdata.length==0){
                 setlastdata(product)
             }
-            setcategorydata(categorydata)
         }catch(error){
             console.log("fetchdata error",error)
         }
